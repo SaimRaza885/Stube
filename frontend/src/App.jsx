@@ -1,7 +1,24 @@
-const App = () => {
+import routes from './route/route';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ProtectedRoute from './components/ProtectedRoute';
+import { Suspense } from 'react';
+
+function App() {
   return (
-    <div className='text-slate-900 text-xl'>App</div>
-  )
+    <Router>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          {routes.map(({ path, element, isPrivate }) => (
+            <Route
+              key={path}
+              path={path}
+              element={isPrivate ? <ProtectedRoute>{element}</ProtectedRoute> : element}
+            />
+          ))}
+        </Routes>
+      </Suspense>
+    </Router>
+  );
 }
 
-export default App
+export default App;
