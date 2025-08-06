@@ -29,7 +29,7 @@ const ChannelStats = () => {
     <div className="p-4 bg-white shadow-md rounded-lg">
       <h2 className="text-xl font-bold mb-4">📊 Channel Stats</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-        <div className="bg-blue-100 p-4 rounded-lg">
+        <div className=" bg-blue-100 p-4 rounded-lg">
           <p className="text-lg font-semibold">{stats.totalSubscribers}</p>
           <p className="text-sm text-gray-600">Subscribers</p>
         </div>
