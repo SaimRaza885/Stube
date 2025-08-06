@@ -6,7 +6,7 @@ import { Suspense } from 'react';
 function App() {
   return (
     <Router>
-      <Suspense fallback={<div>Loading...</div>}>
+      {/* <Suspense fallback={<div>Loading...</div>}> */}
         <Routes>
           {routes.map(({ path, element, isPrivate }) => (
             <Route
@@ -16,7 +16,7 @@ function App() {
             />
           ))}
         </Routes>
-      </Suspense>
+      {/* </Suspense> */}
     </Router>
   );
 }
