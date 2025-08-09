@@ -2,11 +2,12 @@ import routes from './route/route';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import { Suspense } from 'react';
+import Loading from './components/Loading';
 
 function App() {
   return (
     <Router>
-      {/* <Suspense fallback={<div>Loading...</div>}> */}
+      <Suspense fallback={<Loading/>}>
         <Routes>
           {routes.map(({ path, element, isPrivate }) => (
             <Route
@@ -16,7 +17,7 @@ function App() {
             />
           ))}
         </Routes>
-      {/* </Suspense> */}
+      </Suspense>
     </Router>
   );
 }

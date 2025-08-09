@@ -1,4 +1,4 @@
-const Avatar_logo = ({ image, size = 48 }) => {
+const Avatar_logo = ({ image, size = 40 }) => {
   return (
     <div
       className="rounded-full overflow-hidden"

@@ -1,4 +1,5 @@
-import { useState } from "react";
+// src/pages/user/Registration_Form.jsx
+import React, { useState } from "react";
 import axios from "axios";
 
 const RegistrationForm = () => {
@@ -7,118 +8,107 @@ const RegistrationForm = () => {
     email: "",
     username: "",
     password: "",
+    avatar: null,
+    coverImage: null,
   });
-  const [avatar, setAvatar] = useState(null);
-  const [coverImage, setCoverImage] = useState(null);
+
   const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState({ success: "", error: "" });
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleFileChange = (e) => {
-    const { name, files } = e.target;
-    if (name === "avatar") setAvatar(files[0]);
-    if (name === "coverImage") setCoverImage(files[0]);
+    const { name, value, files } = e.target;
+    if (files) {
+      setFormData((prev) => ({ ...prev, [name]: files[0] }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setSuccess("");
     setLoading(true);
-    setResponse({ success: "", error: "" });
+
+    const data = new FormData();
+    data.append("fullName", formData.fullName);
+    data.append("email", formData.email);
+    data.append("username", formData.username);
+    data.append("password", formData.password);
+    if (formData.avatar) data.append("avatar", formData.avatar);
+    if (formData.coverImage) data.append("coverImage", formData.coverImage);
 
     try {
-      const form = new FormData();
-      Object.entries(formData).forEach(([key, value]) => form.append(key, value));
-      if (avatar) form.append("avatar", avatar);
-      if (coverImage) form.append("coverImage", coverImage);
-
-      const { data } = await axios.post("http://localhost:5000/api/v1/users/register", form, {
-        headers: { "Content-Type": "multipart/form-data" },
-        withCredentials: true, // include if using cookies/tokens
-      });
-
-      setResponse({ success: data?.message || "Registered successfully!", error: "" });
-      setFormData({ fullName: "", email: "", username: "", password: "" });
-      setAvatar(null);
-      setCoverImage(null);
+      const res = await axios.post("/api/v1/users/register", data);
+      console.log(res.data)
+      setSuccess(res.data?.message || "User registered successfully.");
     } catch (err) {
-      const msg = err?.response?.data?.message || "Something went wrong";
-      setResponse({ success: "", error: msg });
+      setError(
+        err.response?.data?.message || "Something went wrong. Try again."
+      );
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-10 p-6 bg-white dark:bg-zinc-900 rounded-lg shadow-xl text-gray-800 dark:text-white">
-      <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
+    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow-md">
+      <h2 className="text-xl font-semibold mb-4 text-center">Register New User</h2>
+
+      {error && <p className="text-red-500 mb-4">{error}</p>}
+      {success && <p className="text-green-600 mb-4">{success}</p>}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
           name="fullName"
           placeholder="Full Name"
-          className="w-full p-3 rounded bg-zinc-100 dark:bg-zinc-800"
           value={formData.fullName}
           onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          className="w-full p-3 rounded bg-zinc-100 dark:bg-zinc-800"
-          value={formData.username}
-          onChange={handleChange}
+          className="w-full border p-2 rounded"
+          required
         />
         <input
           type="email"
           name="email"
           placeholder="Email"
-          className="w-full p-3 rounded bg-zinc-100 dark:bg-zinc-800"
           value={formData.email}
           onChange={handleChange}
+          className="w-full border p-2 rounded"
+          required
+        />
+        <input
+          type="text"
+          name="username"
+          placeholder="Username"
+          value={formData.username}
+          onChange={handleChange}
+          className="w-full border p-2 rounded"
+          required
         />
         <input
           type="password"
           name="password"
           placeholder="Password"
-          className="w-full p-3 rounded bg-zinc-100 dark:bg-zinc-800"
           value={formData.password}
           onChange={handleChange}
+          className="w-full border p-2 rounded"
+          required
         />
-
-        <div className="space-y-2">
-          <label className="block">Avatar (Required)</label>
-          <input
-            type="file"
-            name="avatar"
-            accept="image/*"
-            onChange={handleFileChange}
-            className="block w-full text-sm text-gray-500 file:bg-zinc-300 dark:file:bg-zinc-700 file:rounded file:px-4 file:py-2"
-            required
-          />
+        <div>
+          <label className="block mb-1">Avatar Image</label>
+          <input type="file" name="avatar" onChange={handleChange} required />
         </div>
-
-        <div className="space-y-2">
-          <label className="block">Cover Image (Optional)</label>
-          <input
-            type="file"
-            name="coverImage"
-            accept="image/*"
-            onChange={handleFileChange}
-            className="block w-full text-sm text-gray-500 file:bg-zinc-300 dark:file:bg-zinc-700 file:rounded file:px-4 file:py-2"
-          />
+        <div>
+          <label className="block mb-1">Cover Image (optional)</label>
+          <input type="file" name="coverImage" onChange={handleChange} />
         </div>
-
-        {response.success && <p className="text-green-500">{response.success}</p>}
-        {response.error && <p className="text-red-500">{response.error}</p>}
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white p-3 rounded disabled:opacity-50"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded"
         >
           {loading ? "Registering..." : "Register"}
         </button>

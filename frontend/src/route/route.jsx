@@ -69,8 +69,9 @@ const routes = [
   { path: "/subscriptions/subscribed/c/:channelId", element: <SubscribedChannels />, isPrivate: true },
   { path: "/subscriptions/subscribers/u/:subscriberId", element: <ChannelSubscribers />, isPrivate: true },
 
-  { path: "/dashboard/stats", element: <Stats />, isPrivate: true },
-  { path: "/dashboard/videos", element: <Videos />, isPrivate: true },
+  // { path: "/dashboard/stats", element: <Stats />, isPrivate: true },
+  // { path: "/dashboard/videos", element: <Videos />, isPrivate: true },
+  { path: "/dashboard", element: <Dashboard />, isPrivate: true },
 ];
 
 export default routes;

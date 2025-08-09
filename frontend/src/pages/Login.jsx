@@ -22,7 +22,7 @@ const Login = () => {
         ? { email: formData.emailOrUsername, password: formData.password }
         : { username: formData.emailOrUsername, password: formData.password };
 
-      const res = await axios.post("http://localhost:5000/api/v1/users/login", payload, {
+      const res = await axios.post("api/v1/users/login", payload, {
         withCredentials: true,
       });
 
