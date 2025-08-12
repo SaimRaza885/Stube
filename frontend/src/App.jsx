@@ -6,6 +6,7 @@ import Loading from './components/Loading';
 
 function App() {
   return (
+    
     <Router>
       <Suspense fallback={<Loading/>}>
         <Routes>

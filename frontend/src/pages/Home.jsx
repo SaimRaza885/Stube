@@ -17,12 +17,11 @@ export default function HomePage() {
     },
   ]);
 
+  const [user,setUser] = useState({})
+
   useEffect(() => {
     // Replace with your actual GET API endpoint to fetch videos
-    // axios.get("/api/v1/videos").then((res) => {
-    //   setVideos(res.data?.data || []);
-    // });
-    console.log("vidoes page");
+  console.log("i am on home page")
   }, []);
 
   return (
@@ -56,6 +55,7 @@ export default function HomePage() {
         </div>
       </header>
 
+<div className="text-9xl">{user.name}</div>
       {/* Video Grid */}
       <main className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {videos?.map((video, i) => (
@@ -65,6 +65,7 @@ export default function HomePage() {
             logoImageUrl={video.logo}
             thumbnailUrl={video.thumbnail}
             title={video.title}
+          username={"saoim"}
           />
         ))}
       </main>

@@ -1,7 +1,7 @@
 const Loading = () => {
   return (
-    <div className="w-full h-full bg-black flex items-center justify-center ">
-      <div className="border-4 border-white border-t-0 animate-spin" />
+    <div className="w-full h-screen bg-black flex items-center justify-center transition-all duration-500">
+      <div className="border-4 w-20 h-20 rounded-full bg-transparent border-white border-t-transparent animate-spin" />
     </div>
   );
 };

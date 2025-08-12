@@ -1,10 +1,15 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useLoggedIn } from "../context/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ emailOrUsername: "", password: "" });
+  const { setIsAuthenticated } = useLoggedIn();
+  const [formData, setFormData] = useState({
+    emailOrUsername: "",
+    password: "",
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -25,6 +30,13 @@ const Login = () => {
       const res = await axios.post("api/v1/users/login", payload, {
         withCredentials: true,
       });
+
+      const login_token = localStorage.setItem(
+        "token",
+        res.data.data.accessToken
+      );
+
+      setIsAuthenticated(login_token);
 
       console.log(res.data);
       navigate("/");

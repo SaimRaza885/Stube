@@ -1,9 +1,10 @@
 // src/components/ProtectedRoute.js
 import { Navigate } from "react-router-dom";
-
+import { useLoggedIn } from "../context/AuthContext";
 const ProtectedRoute = ({ children }) => {
-  // const isAuthenticated = !!localStorage.getItem("token"); // Or use context/auth provider
-  const isAuthenticated = true;
+   // Or use context/auth provider
+  //  const {isAuthenticated} = useLoggedIn()
+  const isAuthenticated = true
   return isAuthenticated ? children : <Navigate to="/login" />;
 };
 

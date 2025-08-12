@@ -1,6 +1,7 @@
 // src/pages/user/Registration_Form.jsx
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ const RegistrationForm = () => {
     coverImage: null,
   });
 
+  const Navigate = useNavigate()
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -41,8 +43,13 @@ const RegistrationForm = () => {
 
     try {
       const res = await axios.post("/api/v1/users/register", data);
-      console.log(res.data)
-      setSuccess(res.data?.message || "User registered successfully.");
+      setSuccess(
+        typeof res.data?.message === "string"
+        ? res.data.message
+        : "User registered successfully."
+      );
+      console.log(res.data.data);
+      Navigate("/login")
     } catch (err) {
       setError(
         err.response?.data?.message || "Something went wrong. Try again."
@@ -54,7 +61,9 @@ const RegistrationForm = () => {
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow-md">
-      <h2 className="text-xl font-semibold mb-4 text-center">Register New User</h2>
+      <h2 className="text-xl font-semibold mb-4 text-center">
+        Register New User
+      </h2>
 
       {error && <p className="text-red-500 mb-4">{error}</p>}
       {success && <p className="text-green-600 mb-4">{success}</p>}
