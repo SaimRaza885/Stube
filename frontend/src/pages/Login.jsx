@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLoggedIn } from "../context/AuthContext";
 
 const Login = () => {
@@ -37,8 +37,6 @@ const Login = () => {
       );
 
       setIsAuthenticated(login_token);
-
-      console.log(res.data);
       navigate("/");
     } catch (err) {
       console.error(err);
@@ -93,6 +91,17 @@ const Login = () => {
           >
             {loading ? "Logging in..." : "Login"}
           </button>
+
+          {/* Sign Up link styled & positioned */}
+          <p className="text-sm text-center text-zinc-600 dark:text-zinc-400">
+            Don’t have an account?{" "}
+            <Link
+              to="/register"
+              className="text-blue-600 hover:underline dark:text-blue-400"
+            >
+              Sign Up
+            </Link>
+          </p>
         </form>
       </div>
     </div>
